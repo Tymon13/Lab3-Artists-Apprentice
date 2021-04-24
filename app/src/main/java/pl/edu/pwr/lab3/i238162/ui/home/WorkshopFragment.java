@@ -1,4 +1,4 @@
-package pl.edu.pwr.lab3.artistsapprentice.ui.home;
+package pl.edu.pwr.lab3.i238162.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,15 +12,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import pl.edu.pwr.lab3.artistsapprentice.R;
+import pl.edu.pwr.lab3.i238162.R;
 
-public class HomeFragment extends Fragment {
+public class WorkshopFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        View root = inflater.inflate(R.layout.fragment_workshop, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText()
                      .observe(getViewLifecycleOwner(), new Observer<String>() {

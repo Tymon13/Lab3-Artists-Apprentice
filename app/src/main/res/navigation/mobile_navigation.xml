@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_main">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="pl.edu.pwr.lab3.artistsapprentice.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/navigation_workshop"
+        android:name="pl.edu.pwr.lab3.i238162.ui.home.WorkshopFragment"
+        android:label="@string/title_workshop"
+        tools:layout="@layout/fragment_workshop" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="pl.edu.pwr.lab3.artistsapprentice.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_upgrades"
+        android:name="pl.edu.pwr.lab3.i238162.ui.dashboard.UpgradesFragment"
+        android:label="@string/title_upgrades"
+        tools:layout="@layout/fragment_upgrades" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="pl.edu.pwr.lab3.artistsapprentice.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_main"
+        android:name="pl.edu.pwr.lab3.i238162.ui.notifications.MainFragment"
+        android:label="@string/title_main"
+        tools:layout="@layout/fragment_main" />
 </navigation>

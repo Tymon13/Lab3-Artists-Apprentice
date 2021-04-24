@@ -1,4 +1,4 @@
-package pl.edu.pwr.lab3.artistsapprentice;
+package pl.edu.pwr.lab3.i238162;
 
 import org.junit.Test;
 

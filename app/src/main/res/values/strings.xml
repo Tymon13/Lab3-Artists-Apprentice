@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Artist\'s Apprentice</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_workshop">Atelier</string>
+    <string name="title_upgrades">Upgrades</string>
+    <string name="title_main">Palette</string>
 </resources>

@@ -1,4 +1,4 @@
-package pl.edu.pwr.lab3.artistsapprentice.ui.home;
+package pl.edu.pwr.lab3.i238162.ui.home;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
