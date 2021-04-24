@@ -3,4 +3,9 @@
     <string name="title_workshop">Atelier</string>
     <string name="title_upgrades">Upgrades</string>
     <string name="title_main">Palette</string>
+
+    <string name="camera_permission_needed_dialog">Camera access is needed to play this game. The app does not save the
+        images from camera, it is only used for on-the-fly detection of colours visible.</string>
+
+    <string name="button_ok">OK</string>
 </resources>
