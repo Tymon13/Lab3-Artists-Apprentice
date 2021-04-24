@@ -1,14 +1,14 @@
-package pl.edu.pwr.lab3.i238162.ui.home;
+package pl.edu.pwr.lab3.i238162.ui.workshop;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class WorkshopViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public WorkshopViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

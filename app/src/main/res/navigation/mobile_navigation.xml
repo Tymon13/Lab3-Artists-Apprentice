@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_workshop"
-        android:name="pl.edu.pwr.lab3.i238162.ui.home.WorkshopFragment"
+        android:name="pl.edu.pwr.lab3.i238162.ui.workshop.WorkshopFragment"
         android:label="@string/title_workshop"
         tools:layout="@layout/fragment_workshop" />
 
     <fragment
         android:id="@+id/navigation_upgrades"
-        android:name="pl.edu.pwr.lab3.i238162.ui.dashboard.UpgradesFragment"
+        android:name="pl.edu.pwr.lab3.i238162.ui.upgrades.UpgradesFragment"
         android:label="@string/title_upgrades"
         tools:layout="@layout/fragment_upgrades" />
 
     <fragment
         android:id="@+id/navigation_main"
-        android:name="pl.edu.pwr.lab3.i238162.ui.notifications.MainFragment"
+        android:name="pl.edu.pwr.lab3.i238162.ui.main.MainFragment"
         android:label="@string/title_main"
         tools:layout="@layout/fragment_main" />
 </navigation>

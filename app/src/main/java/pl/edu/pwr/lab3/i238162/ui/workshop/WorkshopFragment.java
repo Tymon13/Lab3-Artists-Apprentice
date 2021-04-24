@@ -1,4 +1,4 @@
-package pl.edu.pwr.lab3.i238162.ui.home;
+package pl.edu.pwr.lab3.i238162.ui.workshop;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,14 +16,14 @@ import pl.edu.pwr.lab3.i238162.R;
 
 public class WorkshopFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private WorkshopViewModel workshopViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        workshopViewModel = new ViewModelProvider(this).get(WorkshopViewModel.class);
         View root = inflater.inflate(R.layout.fragment_workshop, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText()
-                     .observe(getViewLifecycleOwner(), new Observer<String>() {
+        workshopViewModel.getText()
+                         .observe(getViewLifecycleOwner(), new Observer<String>() {
                          @Override
                          public void onChanged(@Nullable String s) {
                              textView.setText(s);

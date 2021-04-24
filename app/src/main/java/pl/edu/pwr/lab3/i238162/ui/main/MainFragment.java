@@ -1,4 +1,4 @@
-package pl.edu.pwr.lab3.i238162.ui.notifications;
+package pl.edu.pwr.lab3.i238162.ui.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,14 +16,14 @@ import pl.edu.pwr.lab3.i238162.R;
 
 public class MainFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private MainViewModel mainViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel = new ViewModelProvider(this).get(NotificationsViewModel.class);
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText()
-                              .observe(getViewLifecycleOwner(), new Observer<String>() {
+        mainViewModel.getText()
+                     .observe(getViewLifecycleOwner(), new Observer<String>() {
                                   @Override
                                   public void onChanged(@Nullable String s) {
                                       textView.setText(s);

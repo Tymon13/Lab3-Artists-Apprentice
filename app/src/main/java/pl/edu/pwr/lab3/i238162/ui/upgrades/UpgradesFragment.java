@@ -1,4 +1,4 @@
-package pl.edu.pwr.lab3.i238162.ui.dashboard;
+package pl.edu.pwr.lab3.i238162.ui.upgrades;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,14 +16,14 @@ import pl.edu.pwr.lab3.i238162.R;
 
 public class UpgradesFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private UpgradesViewModel upgradesViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
+        upgradesViewModel = new ViewModelProvider(this).get(UpgradesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_upgrades, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText()
-                          .observe(getViewLifecycleOwner(), new Observer<String>() {
+        upgradesViewModel.getText()
+                         .observe(getViewLifecycleOwner(), new Observer<String>() {
                               @Override
                               public void onChanged(@Nullable String s) {
                                   textView.setText(s);
