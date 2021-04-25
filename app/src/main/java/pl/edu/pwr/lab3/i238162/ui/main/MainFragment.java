@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
@@ -21,6 +23,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import pl.edu.pwr.lab3.i238162.R;
 
@@ -84,7 +88,18 @@ public class MainFragment extends Fragment {
 
         CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK)
                                                                     .build();
-        cameraProvider.bindToLifecycle(this, cameraSelector, preview);
+
+        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder().setTargetResolution(new Size(1280, 720))
+                                                                 .setBackpressureStrategy(
+                                                                         ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                                                                 .build();
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        imageAnalysis.setAnalyzer(executor, image -> {
+            // insert your code here.
+        });
+
+        cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis);
     }
 
 }
