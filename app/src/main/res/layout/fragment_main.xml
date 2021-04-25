@@ -10,8 +10,45 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/camera_preview_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.camera.view.PreviewView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/paintbucket_red"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginHorizontal="10dp"
+            android:src="@drawable/paint_barrel_tmp"
+            android:contentDescription="@string/cd_paintbucket_red" />
+
+        <ImageView
+            android:id="@+id/paintbucket_green"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginHorizontal="10dp"
+            android:src="@drawable/paint_barrel_tmp"
+            android:contentDescription="@string/cd_paintbucket_green" />
+
+        <ImageView
+            android:id="@+id/paintbucket_blue"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginHorizontal="10dp"
+            android:src="@drawable/paint_barrel_tmp"
+            android:contentDescription="@string/cd_paintbucket_blue" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

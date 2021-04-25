@@ -8,4 +8,8 @@
         images from camera, it is only used for on-the-fly detection of colours visible.</string>
 
     <string name="button_ok">OK</string>
+
+    <string name="cd_paintbucket_red">Paint bucket: red</string>
+    <string name="cd_paintbucket_green">Paint bucket: green</string>
+    <string name="cd_paintbucket_blue">Paint bucket: blue</string>
 </resources>
