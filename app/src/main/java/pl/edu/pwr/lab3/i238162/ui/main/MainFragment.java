@@ -122,6 +122,12 @@ public class MainFragment extends Fragment {
     private void displayCapturedColour(int[] rgbPixel) {
         int detectedColour = (0xFF << 24) | (rgbPixel[0] << 16) | (rgbPixel[1] << 8) | (rgbPixel[2]);
         LinearLayout debug = parentActivity.findViewById(R.id.linearLayout);
-        parentActivity.runOnUiThread(() -> debug.setBackgroundColor(detectedColour));
+        parentActivity.runOnUiThread(() -> {
+            try {
+                debug.setBackgroundColor(detectedColour);
+            } catch (NullPointerException ignored) {
+                // There can be still a few images captured after fragment is changed
+            }
+        });
     }
 }
