@@ -4,10 +4,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -26,6 +28,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import pl.edu.pwr.lab3.i238162.ImageProcessingHelper;
 import pl.edu.pwr.lab3.i238162.R;
 
 public class MainFragment extends Fragment {
@@ -96,10 +99,29 @@ public class MainFragment extends Fragment {
 
         Executor executor = Executors.newSingleThreadExecutor();
         imageAnalysis.setAnalyzer(executor, image -> {
-            // insert your code here.
+            int[] rgbPixel = ImageProcessingHelper.getMiddlePixelAsRgb(image);
+            Log.d(MainFragment.class.getSimpleName(),
+                  String.format("RGB pixel: #%02x%02x%02x", rgbPixel[0], rgbPixel[1], rgbPixel[2]));
+            //TODO: debug feature, but it's useful - could be implemented somewhere eventually
+            displayCapturedColour(rgbPixel);
+
+            //TODO: below code should be moved to Controller eventually
+            image.close();
+            //TODO: temporary solution, should be replaced with some smoother ticks
+            //TODO: something like (time.now() - previous_image_time) * gain/s
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
 
         cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis);
     }
 
+    private void displayCapturedColour(int[] rgbPixel) {
+        int detectedColour = (0xFF << 24) | (rgbPixel[0] << 16) | (rgbPixel[1] << 8) | (rgbPixel[2]);
+        LinearLayout debug = parentActivity.findViewById(R.id.linearLayout);
+        parentActivity.runOnUiThread(() -> debug.setBackgroundColor(detectedColour));
+    }
 }
