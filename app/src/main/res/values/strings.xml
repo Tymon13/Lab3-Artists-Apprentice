@@ -12,4 +12,5 @@
     <string name="cd_paintbucket_red">Paint bucket: red</string>
     <string name="cd_paintbucket_green">Paint bucket: green</string>
     <string name="cd_paintbucket_blue">Paint bucket: blue</string>
+    <string name="cd_aimcross">Aim cross</string>
 </resources>
