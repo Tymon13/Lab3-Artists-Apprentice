@@ -28,19 +28,23 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import pl.edu.pwr.lab3.i238162.GameController;
 import pl.edu.pwr.lab3.i238162.ImageProcessingHelper;
+import pl.edu.pwr.lab3.i238162.MainActivity;
 import pl.edu.pwr.lab3.i238162.R;
 
 public class MainFragment extends Fragment {
     private static final int CAMERA_PERMISSION_CODE = 13;
 
     private Activity parentActivity;
+    private GameController controller;
     private MainViewModel mainViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         parentActivity = requireActivity();
+        controller = ((MainActivity) parentActivity).getController();
 
         if (ContextCompat.checkSelfPermission(parentActivity, Manifest.permission.CAMERA) ==
                 PackageManager.PERMISSION_GRANTED) {
@@ -102,13 +106,14 @@ public class MainFragment extends Fragment {
             int[] rgbPixel = ImageProcessingHelper.getMiddlePixelAsRgb(image);
             Log.d(MainFragment.class.getSimpleName(),
                   String.format("RGB pixel: #%02x%02x%02x", rgbPixel[0], rgbPixel[1], rgbPixel[2]));
+
             //TODO: debug feature, but it's useful - could be implemented somewhere eventually
             displayCapturedColour(rgbPixel);
+            controller.setCurrentColour(rgbPixel);
+
+            image.close();
 
             //TODO: below code should be moved to Controller eventually
-            image.close();
-            //TODO: temporary solution, should be replaced with some smoother ticks
-            //TODO: something like (time.now() - previous_image_time) * gain/s
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
