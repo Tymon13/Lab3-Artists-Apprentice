@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainFragment"
-    >
+    tools:context=".ui.main.MainFragment">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/camera_preview_view"
@@ -19,8 +18,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/cd_aimcross"
         android:src="@drawable/aim_cross"
         app:layout_constraintBottom_toBottomOf="@id/camera_preview_view"
@@ -37,29 +36,69 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/paintbucket_red"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginHorizontal="10dp"
-            android:src="@drawable/paint_barrel_tmp"
-            android:contentDescription="@string/cd_paintbucket_red" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp">
 
-        <ImageView
-            android:id="@+id/paintbucket_green"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginHorizontal="10dp"
-            android:src="@drawable/paint_barrel_tmp"
-            android:contentDescription="@string/cd_paintbucket_green" />
+            <ImageView
+                android:id="@+id/redFillLevel"
+                android:layout_width="@dimen/bucket_width"
+                android:layout_height="51dp"
+                android:layout_gravity="bottom"
+                android:background="#E91E63" />
 
-        <ImageView
-            android:id="@+id/paintbucket_blue"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginHorizontal="10dp"
-            android:src="@drawable/paint_barrel_tmp"
-            android:contentDescription="@string/cd_paintbucket_blue" />
+            <ImageView
+                android:id="@+id/paintbucket_red"
+                android:layout_width="@dimen/bucket_width"
+                android:layout_height="@dimen/bucket_height"
+                android:contentDescription="@string/cd_paintbucket_red"
+                android:src="@drawable/paint_barrel_tmp"
+                app:tint="#F44336" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp">
+
+            <ImageView
+                android:id="@+id/greenFillLevel"
+                android:layout_width="@dimen/bucket_width"
+                android:layout_height="10dp"
+                android:layout_gravity="bottom"
+                android:background="#4CAF50" />
+
+            <ImageView
+                android:id="@+id/paintbucket_green"
+                android:layout_width="@dimen/bucket_width"
+                android:layout_height="@dimen/bucket_height"
+                android:contentDescription="@string/cd_paintbucket_green"
+                android:src="@drawable/paint_barrel_tmp"
+                app:tint="#8BC34A" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp">
+
+            <ImageView
+                android:id="@+id/blueFillLevel"
+                android:layout_width="@dimen/bucket_width"
+                android:layout_height="100dp"
+                android:layout_gravity="bottom"
+                android:background="#3F51B5" />
+
+            <ImageView
+                android:id="@+id/paintbucket_blue"
+                android:layout_width="@dimen/bucket_width"
+                android:layout_height="@dimen/bucket_height"
+                android:contentDescription="@string/cd_paintbucket_blue"
+                android:src="@drawable/paint_barrel_tmp"
+                app:tint="#2196F3" />
+        </FrameLayout>
 
     </LinearLayout>
 

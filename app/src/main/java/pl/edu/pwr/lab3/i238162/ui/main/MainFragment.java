@@ -9,12 +9,14 @@ import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
+import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
@@ -28,6 +30,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import pl.edu.pwr.lab3.i238162.Bucket;
+import pl.edu.pwr.lab3.i238162.Colour;
 import pl.edu.pwr.lab3.i238162.GameController;
 import pl.edu.pwr.lab3.i238162.ImageProcessingHelper;
 import pl.edu.pwr.lab3.i238162.MainActivity;
@@ -35,6 +39,10 @@ import pl.edu.pwr.lab3.i238162.R;
 
 public class MainFragment extends Fragment {
     private static final int CAMERA_PERMISSION_CODE = 13;
+    private ImageView redFillLevel;
+    private ImageView greenFillLevel;
+    private ImageView blueFillLevel;
+    private int maxFillLevelHeight;
 
     private Activity parentActivity;
     private GameController controller;
@@ -45,6 +53,7 @@ public class MainFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         parentActivity = requireActivity();
         controller = ((MainActivity) parentActivity).getController();
+        maxFillLevelHeight = parentActivity.getResources().getDimensionPixelSize(R.dimen.bucket_height);
 
         if (ContextCompat.checkSelfPermission(parentActivity, Manifest.permission.CAMERA) ==
                 PackageManager.PERMISSION_GRANTED) {
@@ -57,6 +66,18 @@ public class MainFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        View view = getView();
+        if (view != null) {
+            redFillLevel = view.findViewById(R.id.redFillLevel);
+            greenFillLevel = view.findViewById(R.id.greenFillLevel);
+            blueFillLevel = view.findViewById(R.id.blueFillLevel);
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == CAMERA_PERMISSION_CODE) {
@@ -65,9 +86,9 @@ public class MainFragment extends Fragment {
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(parentActivity);
                 builder.setMessage(R.string.camera_permission_needed_dialog)
-                       .setPositiveButton(R.string.button_ok, null)
-                       .create()
-                       .show();
+                        .setPositiveButton(R.string.button_ok, null)
+                        .create()
+                        .show();
             }
         }
     }
@@ -94,26 +115,18 @@ public class MainFragment extends Fragment {
         preview.setSurfaceProvider(cameraPreviewView.getSurfaceProvider());
 
         CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                                                                    .build();
+                .build();
 
         ImageAnalysis imageAnalysis = new ImageAnalysis.Builder().setTargetResolution(new Size(1280, 720))
-                                                                 .setBackpressureStrategy(
-                                                                         ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                                                                 .build();
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .build();
 
         Executor executor = Executors.newSingleThreadExecutor();
         imageAnalysis.setAnalyzer(executor, image -> {
-            int[] rgbPixel = ImageProcessingHelper.getMiddlePixelAsRgb(image);
-            Log.d(MainFragment.class.getSimpleName(),
-                  String.format("RGB pixel: #%02x%02x%02x", rgbPixel[0], rgbPixel[1], rgbPixel[2]));
+            analyzeImage(image);
+            updateBuckets();
 
-            //TODO: debug feature, but it's useful - could be implemented somewhere eventually
-            displayCapturedColour(rgbPixel);
-            controller.setCurrentColour(rgbPixel);
-
-            image.close();
-
-            //TODO: below code should be moved to Controller eventually
+            //TODO: I think this should stay to not eat up all resources, but it could be tested
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -122,6 +135,30 @@ public class MainFragment extends Fragment {
         });
 
         cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis);
+    }
+
+    private void analyzeImage(ImageProxy image) {
+        int[] rgbPixel = ImageProcessingHelper.getMiddlePixelAsRgb(image);
+        Log.d(MainFragment.class.getSimpleName(),
+                String.format("RGB pixel: #%02x%02x%02x", rgbPixel[0], rgbPixel[1], rgbPixel[2]));
+        //TODO: debug feature, but it's useful - could be implemented somewhere eventually
+        displayCapturedColour(rgbPixel);
+        controller.setCurrentColour(rgbPixel);
+
+        image.close();
+    }
+
+    private void updateBuckets() {
+        updateBucket(redFillLevel, Colour.Red);
+        updateBucket(greenFillLevel, Colour.Green);
+        updateBucket(blueFillLevel, Colour.Blue);
+    }
+
+    private void updateBucket(ImageView fillLevel, Colour colour) {
+        Bucket bucket = controller.getBucket(colour);
+        ViewGroup.LayoutParams params = fillLevel.getLayoutParams();
+        params.height = (int) (bucket.getFillFraction() * maxFillLevelHeight);
+        parentActivity.runOnUiThread(() -> fillLevel.setLayoutParams(params));
     }
 
     private void displayCapturedColour(int[] rgbPixel) {
