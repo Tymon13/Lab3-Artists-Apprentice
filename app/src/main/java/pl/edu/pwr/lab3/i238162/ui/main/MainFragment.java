@@ -107,8 +107,12 @@ public class MainFragment extends Fragment {
 
         Executor executor = Executors.newSingleThreadExecutor();
         imageAnalysis.setAnalyzer(executor, image -> {
-            analyzeImage(image);
-            updateBuckets();
+            try {
+                analyzeImage(image);
+                updateBuckets();
+            } catch (NullPointerException e) {
+                // There can be few images still captured after fragment is unloaded, ignore this error
+            }
 
             //TODO: I think this should stay to not eat up all resources, but it could be tested
             try {
@@ -133,13 +137,9 @@ public class MainFragment extends Fragment {
     }
 
     private void updateBuckets() {
-        try {
-            updateBucket(Colour.Red);
-            updateBucket(Colour.Green);
-            updateBucket(Colour.Blue);
-        } catch (NullPointerException e) {
-            // There can be several images captured after the fragment is unloaded, ignore the error
-        }
+        updateBucket(Colour.Red);
+        updateBucket(Colour.Green);
+        updateBucket(Colour.Blue);
     }
 
     private void updateBucket(Colour colour) {
@@ -159,12 +159,6 @@ public class MainFragment extends Fragment {
     private void displayCapturedColour(int[] rgbPixel) {
         int detectedColour = (0xFF << 24) | (rgbPixel[0] << 16) | (rgbPixel[1] << 8) | (rgbPixel[2]);
         LinearLayout debug = parentActivity.findViewById(R.id.linearLayout);
-        parentActivity.runOnUiThread(() -> {
-            try {
-                debug.setBackgroundColor(detectedColour);
-            } catch (NullPointerException ignored) {
-                // There can be still a few images captured after fragment is changed
-            }
-        });
+        parentActivity.runOnUiThread(() -> debug.setBackgroundColor(detectedColour));
     }
 }
