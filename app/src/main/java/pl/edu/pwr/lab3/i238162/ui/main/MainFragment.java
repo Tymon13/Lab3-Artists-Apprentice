@@ -133,9 +133,13 @@ public class MainFragment extends Fragment {
     }
 
     private void updateBuckets() {
-        updateBucket(Colour.Red);
-        updateBucket(Colour.Green);
-        updateBucket(Colour.Blue);
+        try {
+            updateBucket(Colour.Red);
+            updateBucket(Colour.Green);
+            updateBucket(Colour.Blue);
+        } catch (NullPointerException e) {
+            // There can be several images captured after the fragment is unloaded, ignore the error
+        }
     }
 
     private void updateBucket(Colour colour) {
