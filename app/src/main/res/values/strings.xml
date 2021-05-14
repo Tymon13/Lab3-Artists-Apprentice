@@ -13,4 +13,9 @@
     <string name="cd_paintbucket_green">Paint bucket: green</string>
     <string name="cd_paintbucket_blue">Paint bucket: blue</string>
     <string name="cd_aimcross">Aim cross</string>
+
+    <string name="filltext">%1$.1f / %2$.1f</string>
+    <string name="filltext_default">0.0 / 1.0</string>
+    <string name="gaintext">+%1$.1f/s</string>
+    <string name="gaintext_default">+0.0/s</string>
 </resources>

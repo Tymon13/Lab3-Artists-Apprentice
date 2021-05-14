@@ -14,6 +14,7 @@ public class GameController {
     private int currentGreenVisible;
     private int currentBlueVisible;
 
+    // TODO: yes, yes, magic values. They will be replaced when upgrades or saving comes
     private final Bucket redBucket = new Bucket(0.1, 0, 1);
     private final Bucket greenBucket = new Bucket(0.1, 0, 1);
     private final Bucket blueBucket = new Bucket(0.1, 0, 1);
@@ -48,28 +49,34 @@ public class GameController {
     }
 
     private void calculateGameTick() {
-        Colour c = getMostVisibleColour();
-        long timeSpent = gameTickLength; // TODO: fix with actual time spent
-        switch (c) {
-            case Red:
-                redBucket.updateTick(timeSpent, colourSaturation(currentRedVisible));
-            case Green:
-                greenBucket.updateTick(timeSpent, colourSaturation(currentGreenVisible));
-            case Blue:
-                blueBucket.updateTick(timeSpent, colourSaturation(currentBlueVisible));
+        synchronized (visibleColourLock) {
+            Colour c = getMostVisibleColour();
+            long timeSpent = gameTickLength; // TODO: fix with actual time spent
+            switch (c) {
+                case Red:
+                    redBucket.updateTick(timeSpent, colourSaturation(currentRedVisible));
+                    break;
+                case Green:
+                    greenBucket.updateTick(timeSpent, colourSaturation(currentGreenVisible));
+                    break;
+                case Blue:
+                    blueBucket.updateTick(timeSpent, colourSaturation(currentBlueVisible));
+                    break;
+            }
         }
     }
 
     private Colour getMostVisibleColour() {
-        synchronized (visibleColourLock) {
-            if (currentRedVisible > currentGreenVisible && currentRedVisible > currentBlueVisible) {
-                return Colour.Red;
-            } else if (currentGreenVisible > currentBlueVisible) {
-                return Colour.Green;
-            } else {
-                return Colour.Blue;
-            }
+        Log.d(getClass().getSimpleName(), String.format("Current colours: %d %d %d",
+                currentRedVisible, currentGreenVisible, currentBlueVisible));
+        if (currentRedVisible > currentGreenVisible && currentRedVisible > currentBlueVisible) {
+            return Colour.Red;
+        } else if (currentGreenVisible > currentBlueVisible) {
+            return Colour.Green;
+        } else {
+            return Colour.Blue;
         }
+
     }
 
     private double colourSaturation(int colourValue) {

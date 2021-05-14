@@ -9,7 +9,6 @@ import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -39,9 +38,6 @@ import pl.edu.pwr.lab3.i238162.R;
 
 public class MainFragment extends Fragment {
     private static final int CAMERA_PERMISSION_CODE = 13;
-    private ImageView redFillLevel;
-    private ImageView greenFillLevel;
-    private ImageView blueFillLevel;
     private int maxFillLevelHeight;
 
     private Activity parentActivity;
@@ -63,18 +59,6 @@ public class MainFragment extends Fragment {
         }
 
         return root;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        View view = getView();
-        if (view != null) {
-            redFillLevel = view.findViewById(R.id.redFillLevel);
-            greenFillLevel = view.findViewById(R.id.greenFillLevel);
-            blueFillLevel = view.findViewById(R.id.blueFillLevel);
-        }
     }
 
     @Override
@@ -149,16 +133,23 @@ public class MainFragment extends Fragment {
     }
 
     private void updateBuckets() {
-        updateBucket(redFillLevel, Colour.Red);
-        updateBucket(greenFillLevel, Colour.Green);
-        updateBucket(blueFillLevel, Colour.Blue);
+        updateBucket(Colour.Red);
+        updateBucket(Colour.Green);
+        updateBucket(Colour.Blue);
     }
 
-    private void updateBucket(ImageView fillLevel, Colour colour) {
+    private void updateBucket(Colour colour) {
+        PaintBucketViewHolder holder = new PaintBucketViewHolder(parentActivity, colour);
         Bucket bucket = controller.getBucket(colour);
-        ViewGroup.LayoutParams params = fillLevel.getLayoutParams();
+        ViewGroup.LayoutParams params = holder.fillrect.getLayoutParams();
         params.height = (int) (bucket.getFillFraction() * maxFillLevelHeight);
-        parentActivity.runOnUiThread(() -> fillLevel.setLayoutParams(params));
+        String fillText = getString(R.string.filltext, bucket.getCurrentLevel(), bucket.getMaxLevel());
+        String gainText = getString(R.string.gaintext, bucket.getGainPerSecond());
+        parentActivity.runOnUiThread(() -> {
+            holder.fillrect.setLayoutParams(params);
+            holder.filltext.setText(fillText);
+            holder.gaintext.setText(gainText);
+        });
     }
 
     private void displayCapturedColour(int[] rgbPixel) {

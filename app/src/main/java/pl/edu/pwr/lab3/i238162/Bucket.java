@@ -1,7 +1,5 @@
 package pl.edu.pwr.lab3.i238162;
 
-import android.util.Log;
-
 public class Bucket {
     private double gainPerSecond;
     private double currentLevel;
@@ -34,6 +32,6 @@ public class Bucket {
     }
 
     public double getGainPerSecond() {
-        return  gainPerSecond * currentModifier;
+        return gainPerSecond * currentModifier;
     }
 }
