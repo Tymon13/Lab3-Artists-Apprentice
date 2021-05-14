@@ -10,4 +10,14 @@ public class WorkshopBucket extends Bucket {
         double maxExtractInTick = gainPerSecond * timeSpentInS;
         return Math.max(maxExtracted, maxExtractInTick);
     }
+
+    public void fillFrom(Bucket otherBucket) {
+        double amountToTransfer = Math.min(getRemainingSpace(), otherBucket.getCurrentLevel());
+        fillFrom(otherBucket, amountToTransfer);
+    }
+
+    private void fillFrom(Bucket otherBucket, double amount) {
+        otherBucket.remove(amount);
+        this.add(amount);
+    }
 }

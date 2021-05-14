@@ -27,4 +27,16 @@ public class Bucket {
     public double getGainPerSecond() {
         return gainPerSecond * currentModifier;
     }
+
+    public double getRemainingSpace() {
+        return maxLevel - currentLevel;
+    }
+
+    protected void remove(double amount) {
+        currentLevel = Math.max(0.0, currentLevel - amount);
+    }
+
+    protected void add(double amount) {
+        currentLevel = Math.min(maxLevel, currentLevel + amount);
+    }
 }

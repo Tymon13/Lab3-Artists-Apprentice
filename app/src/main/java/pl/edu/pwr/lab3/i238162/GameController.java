@@ -8,7 +8,6 @@ public class GameController {
     private Runnable gameTick;
     private final long gameTickLength = 1000;
 
-
     private final Object visibleColourLock = new Object();
     private int currentRedVisible;
     private int currentGreenVisible;
@@ -18,6 +17,8 @@ public class GameController {
     private final PlayerBucket redBucket = new PlayerBucket(0.1, 0, 1);
     private final PlayerBucket greenBucket = new PlayerBucket(0.1, 0, 1);
     private final PlayerBucket blueBucket = new PlayerBucket(0.1, 0, 1);
+
+    private final Workshop workshop = new Workshop();
 
     public GameController() {
         handler.postDelayed(gameTick = () -> {
@@ -33,6 +34,12 @@ public class GameController {
             currentGreenVisible = rgbColour[1];
             currentBlueVisible = rgbColour[2];
         }
+    }
+
+    public void transferPaintToWorkshop() {
+        workshop.transferPaint(Colour.Red, redBucket);
+        workshop.transferPaint(Colour.Green, greenBucket);
+        workshop.transferPaint(Colour.Blue, blueBucket);
     }
 
     public Bucket getBucket(Colour colour) {
