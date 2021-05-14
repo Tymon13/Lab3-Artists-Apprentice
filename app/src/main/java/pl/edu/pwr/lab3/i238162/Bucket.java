@@ -1,22 +1,15 @@
 package pl.edu.pwr.lab3.i238162;
 
 public class Bucket {
-    private double gainPerSecond;
-    private double currentLevel;
-    private double maxLevel;
-    private double currentModifier;
+    protected double gainPerSecond;
+    protected double currentLevel;
+    protected double maxLevel;
+    protected double currentModifier = 0.0;
 
     Bucket(double gainPerSecond, double currentLevel, double maxLevel) {
         this.gainPerSecond = gainPerSecond;
         this.currentLevel = currentLevel;
         this.maxLevel = maxLevel;
-    }
-
-    public void updateTick(long timeSpentInMs, double modifier) {
-        currentModifier = modifier;
-        double timeSpentInS = timeSpentInMs / 1000.0;
-        double gain = gainPerSecond * timeSpentInS * currentModifier;
-        currentLevel = Math.min(maxLevel, currentLevel + gain);
     }
 
     public double getCurrentLevel() {

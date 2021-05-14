@@ -15,9 +15,9 @@ public class GameController {
     private int currentBlueVisible;
 
     // TODO: yes, yes, magic values. They will be replaced when upgrades or saving comes
-    private final Bucket redBucket = new Bucket(0.1, 0, 1);
-    private final Bucket greenBucket = new Bucket(0.1, 0, 1);
-    private final Bucket blueBucket = new Bucket(0.1, 0, 1);
+    private final PlayerBucket redBucket = new PlayerBucket(0.1, 0, 1);
+    private final PlayerBucket greenBucket = new PlayerBucket(0.1, 0, 1);
+    private final PlayerBucket blueBucket = new PlayerBucket(0.1, 0, 1);
 
     public GameController() {
         handler.postDelayed(gameTick = () -> {
