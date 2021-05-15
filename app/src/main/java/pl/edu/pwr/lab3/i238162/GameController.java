@@ -28,6 +28,10 @@ public class GameController {
         }, gameTickLength);
     }
 
+    public Workshop getWorkshop() {
+        return workshop;
+    }
+
     // an observer pattern would be an overkill here
     public void setCurrentColour(int[] rgbColour) {
         synchronized (visibleColourLock) {
