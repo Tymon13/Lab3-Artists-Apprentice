@@ -20,9 +20,10 @@ public class GameController {
 
     private final Workshop workshop = new Workshop();
 
-    public GameController() {
+    public GameController(MainActivity parentActivity) {
         handler.postDelayed(gameTick = () -> {
             calculateGameTick();
+            parentActivity.updateUi();
             handler.postDelayed(gameTick, gameTickLength);
         }, gameTickLength);
     }

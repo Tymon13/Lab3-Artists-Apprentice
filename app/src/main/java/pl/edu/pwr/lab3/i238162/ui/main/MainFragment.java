@@ -1,7 +1,6 @@
 package pl.edu.pwr.lab3.i238162.ui.main;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,20 +34,21 @@ import pl.edu.pwr.lab3.i238162.GameController;
 import pl.edu.pwr.lab3.i238162.ImageProcessingHelper;
 import pl.edu.pwr.lab3.i238162.MainActivity;
 import pl.edu.pwr.lab3.i238162.R;
+import pl.edu.pwr.lab3.i238162.ui.UiUpdatable;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements UiUpdatable {
     private static final int CAMERA_PERMISSION_CODE = 13;
     private int maxFillLevelHeight;
 
-    private Activity parentActivity;
+    private MainActivity parentActivity;
     private GameController controller;
     private MainViewModel mainViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         View root = inflater.inflate(R.layout.fragment_main, container, false);
-        parentActivity = requireActivity();
-        controller = ((MainActivity) parentActivity).getController();
+        parentActivity = (MainActivity) requireActivity();
+        controller = parentActivity.getController();
         maxFillLevelHeight = parentActivity.getResources().getDimensionPixelSize(R.dimen.bucket_height);
 
         if (ContextCompat.checkSelfPermission(parentActivity, Manifest.permission.CAMERA) ==
@@ -75,6 +75,25 @@ public class MainFragment extends Fragment {
                         .show();
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(getClass().getSimpleName(), "Register MainFragment");
+        parentActivity.registerCurrentUiElement(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(getClass().getSimpleName(), "Deregister MainFragment");
+        parentActivity.deregisterCurrentUiElement(this);
+    }
+
+    @Override
+    public void updateUi() {
+        updateBuckets();
     }
 
     private void startPreview() {
@@ -107,13 +126,7 @@ public class MainFragment extends Fragment {
 
         Executor executor = Executors.newSingleThreadExecutor();
         imageAnalysis.setAnalyzer(executor, image -> {
-            try {
-                analyzeImage(image);
-                updateBuckets();
-            } catch (NullPointerException e) {
-                // There can be few images still captured after fragment is unloaded, ignore this error
-            }
-
+            analyzeImage(image);
             //TODO: I think this should stay to not eat up all resources, but it could be tested
             try {
                 Thread.sleep(100);
@@ -159,6 +172,12 @@ public class MainFragment extends Fragment {
     private void displayCapturedColour(int[] rgbPixel) {
         int detectedColour = (0xFF << 24) | (rgbPixel[0] << 16) | (rgbPixel[1] << 8) | (rgbPixel[2]);
         LinearLayout debug = parentActivity.findViewById(R.id.linearLayout);
-        parentActivity.runOnUiThread(() -> debug.setBackgroundColor(detectedColour));
+        parentActivity.runOnUiThread(() -> {
+            try {
+                debug.setBackgroundColor(detectedColour);
+            } catch (NullPointerException e) {
+                // There can be few images still captured after fragment is unloaded, ignore this error
+            }
+        });
     }
 }
