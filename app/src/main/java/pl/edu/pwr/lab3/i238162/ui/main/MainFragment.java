@@ -82,6 +82,7 @@ public class MainFragment extends Fragment implements UiUpdatable {
     public void onResume() {
         super.onResume();
         Log.i(getClass().getSimpleName(), "Register MainFragment");
+        updateUi();
         parentActivity.registerCurrentUiElement(this);
     }
 
