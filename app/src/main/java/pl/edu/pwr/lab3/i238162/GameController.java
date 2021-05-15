@@ -18,9 +18,11 @@ public class GameController {
     private final PlayerBucket greenBucket = new PlayerBucket(0.1, 0, 1);
     private final PlayerBucket blueBucket = new PlayerBucket(0.1, 0, 1);
 
-    private final Workshop workshop = new Workshop();
+    private final Workshop workshop;
 
     public GameController(MainActivity parentActivity) {
+        workshop = new Workshop(parentActivity);
+
         handler.postDelayed(gameTick = () -> {
             calculateGameTick();
             parentActivity.updateUi();

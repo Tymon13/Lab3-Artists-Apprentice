@@ -1,9 +1,9 @@
 package pl.edu.pwr.lab3.i238162.ui.workshop;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +18,17 @@ import pl.edu.pwr.lab3.i238162.Colour;
 import pl.edu.pwr.lab3.i238162.GameController;
 import pl.edu.pwr.lab3.i238162.MainActivity;
 import pl.edu.pwr.lab3.i238162.R;
+import pl.edu.pwr.lab3.i238162.Workshop;
 import pl.edu.pwr.lab3.i238162.ui.UiUpdatable;
 import pl.edu.pwr.lab3.i238162.ui.main.PaintBucketViewHolder;
 
 public class WorkshopFragment extends Fragment implements UiUpdatable {
     private WorkshopViewModel workshopViewModel;
-    private GameController controller;
+
     private MainActivity parentActivity;
+    private GameController controller;
+    private Workshop workshop;
+
     private ImageView currentPainting;
     private double maxFillLevelHeight;
 
@@ -34,6 +38,7 @@ public class WorkshopFragment extends Fragment implements UiUpdatable {
 
         parentActivity = (MainActivity) requireActivity();
         controller = parentActivity.getController();
+        workshop = controller.getWorkshop();
         maxFillLevelHeight = parentActivity.getResources().getDimensionPixelSize(R.dimen.bucket_height);
 
         currentPainting = root.findViewById(R.id.current_painting);
@@ -64,10 +69,11 @@ public class WorkshopFragment extends Fragment implements UiUpdatable {
     }
 
     private void updatePainting() {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inScaled = false;
-        Bitmap img = BitmapFactory.decodeResource(getResources(), R.drawable.painting_tutorial, options);
-        img = Bitmap.createScaledBitmap(img, 128, 128, false);
+        int[] sourceImg = workshop.getCurrentPaintingState();
+        Size size = workshop.getCurrentPaintingSize();
+        Bitmap img = Bitmap.createBitmap(sourceImg, size.getWidth(), size.getHeight(), Bitmap.Config.ARGB_8888);
+        int targetDimension = 128;
+        img = Bitmap.createScaledBitmap(img, targetDimension, targetDimension, false);
         currentPainting.setImageBitmap(img);
     }
 
