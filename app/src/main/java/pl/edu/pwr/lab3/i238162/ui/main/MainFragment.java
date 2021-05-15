@@ -25,8 +25,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import pl.edu.pwr.lab3.i238162.Bucket;
 import pl.edu.pwr.lab3.i238162.Colour;
@@ -38,6 +38,7 @@ import pl.edu.pwr.lab3.i238162.ui.UiUpdatable;
 
 public class MainFragment extends Fragment implements UiUpdatable {
     private static final int CAMERA_PERMISSION_CODE = 13;
+    private final AtomicBoolean shouldContinueImageAnalysis = new AtomicBoolean();
     private int maxFillLevelHeight;
 
     private MainActivity parentActivity;
@@ -88,6 +89,7 @@ public class MainFragment extends Fragment implements UiUpdatable {
     public void onPause() {
         super.onPause();
         Log.i(getClass().getSimpleName(), "Deregister MainFragment");
+        shouldContinueImageAnalysis.set(false);
         parentActivity.deregisterCurrentUiElement(this);
     }
 
@@ -124,21 +126,17 @@ public class MainFragment extends Fragment implements UiUpdatable {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
 
-        Executor executor = Executors.newSingleThreadExecutor();
-        imageAnalysis.setAnalyzer(executor, image -> {
-            analyzeImage(image);
-            //TODO: I think this should stay to not eat up all resources, but it could be tested
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+        imageAnalysis.setAnalyzer(Executors.newSingleThreadExecutor(), this::analyzeImage);
+        shouldContinueImageAnalysis.set(true);
 
         cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis);
     }
 
     private void analyzeImage(ImageProxy image) {
+        if(!shouldContinueImageAnalysis.get()) {
+            return;
+        }
+
         int[] rgbPixel = ImageProcessingHelper.getMiddlePixelAsRgb(image);
         Log.d(MainFragment.class.getSimpleName(),
                 String.format("RGB pixel: #%02x%02x%02x", rgbPixel[0], rgbPixel[1], rgbPixel[2]));
@@ -147,6 +145,13 @@ public class MainFragment extends Fragment implements UiUpdatable {
         controller.setCurrentColour(rgbPixel);
 
         image.close();
+
+        //TODO: I think this should stay to not eat up all resources, but it could be tested
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void updateBuckets() {
@@ -172,12 +177,6 @@ public class MainFragment extends Fragment implements UiUpdatable {
     private void displayCapturedColour(int[] rgbPixel) {
         int detectedColour = (0xFF << 24) | (rgbPixel[0] << 16) | (rgbPixel[1] << 8) | (rgbPixel[2]);
         LinearLayout debug = parentActivity.findViewById(R.id.linearLayout);
-        parentActivity.runOnUiThread(() -> {
-            try {
-                debug.setBackgroundColor(detectedColour);
-            } catch (NullPointerException e) {
-                // There can be few images still captured after fragment is unloaded, ignore this error
-            }
-        });
+        parentActivity.runOnUiThread(() -> debug.setBackgroundColor(detectedColour));
     }
 }
