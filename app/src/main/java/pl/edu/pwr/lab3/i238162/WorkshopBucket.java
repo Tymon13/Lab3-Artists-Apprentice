@@ -8,7 +8,10 @@ public class WorkshopBucket extends Bucket {
     public double extractPerTick(long timeSpentInMs, double maxExtracted) {
         double timeSpentInS = timeSpentInMs / 1000.0;
         double maxExtractInTick = gainPerSecond * timeSpentInS;
-        return Math.max(maxExtracted, maxExtractInTick);
+        double maxExtractable = Math.min(maxExtractInTick, currentLevel);
+        double extractedAmount = Math.min(maxExtracted, maxExtractable);
+        this.remove(extractedAmount);
+        return extractedAmount;
     }
 
     public void fillFrom(Bucket otherBucket) {

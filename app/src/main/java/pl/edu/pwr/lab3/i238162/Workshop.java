@@ -57,11 +57,7 @@ public class Workshop {
         }
     }
 
-    public void updateTick(long timeSpentInMs) {
-
-    }
-
-    public Bucket getBucket(Colour colour) {
+    public WorkshopBucket getBucket(Colour colour) {
         switch (colour) {
             case Red:
                 return redBucket;
@@ -80,5 +76,66 @@ public class Workshop {
 
     public Size getCurrentPaintingSize() {
         return new Size(currentSource.getWidth(), currentSource.getHeight());
+    }
+
+    public void updateTick(long timeSpentInMs) {
+        updatePixel(timeSpentInMs, Colour.Red);
+        updatePixel(timeSpentInMs, Colour.Green);
+        updatePixel(timeSpentInMs, Colour.Blue);
+        movePixelPointer();
+    }
+
+    private void movePixelPointer() {
+        if(currentPaintingState[currentPaintedPixel] == finalPainting[currentPaintedPixel]) {
+            ++currentPaintedPixel;
+        }
+
+        if (currentPaintedPixel == currentPaintingState.length) {
+            //TODO: workaround, should be replaced with loading next image
+            currentPaintedPixel = 0;
+        }
+    }
+
+    private void updatePixel(long timeSpentInMs, Colour colour) {
+        int currentPixelValue = getPixelFromPainting(currentPaintingState, colour);
+        int expectedPixelValue = getPixelFromPainting(finalPainting, colour);
+        double missingAmount = getRequiredPaintAmount(expectedPixelValue, currentPixelValue);
+
+        WorkshopBucket currentBucket = getBucket(colour);
+        double paintToAdd = currentBucket.extractPerTick(timeSpentInMs, missingAmount);
+        int pixelValueToAdd = ImageProcessingHelper.pixelValue(paintToAdd);
+        int clampedPixelValue = Math.min(currentPixelValue + pixelValueToAdd, expectedPixelValue);
+
+        setPixelToPainting(currentPaintingState, colour, clampedPixelValue);
+    }
+
+    private double getRequiredPaintAmount(int expectedPixelValue, int currentPixelValue) {
+        return ImageProcessingHelper.colourSaturation(expectedPixelValue - currentPixelValue);
+    }
+
+    private int getPixelFromPainting(int[] painting, Colour colour) {
+        int shift = getPixelShift(colour);
+        return (painting[currentPaintedPixel] >> shift) & 0xFF;
+    }
+
+    private void setPixelToPainting(int[] painting, Colour colour, int value) {
+        int shift = getPixelShift(colour);
+        int pixel = painting[currentPaintedPixel];
+        int mask = 0xFF << shift;
+        value = value << shift;
+        pixel = (pixel & ~mask) | value;
+        painting[currentPaintedPixel] = pixel;
+    }
+
+    private int getPixelShift(Colour colour) {
+        switch (colour) {
+            case Red:
+                return 16;
+            case Green:
+                return 8;
+            case Blue:
+                return 0;
+        }
+        return 0;
     }
 }

@@ -63,18 +63,23 @@ public class GameController {
     }
 
     private void calculateGameTick() {
+        long timeSpent = gameTickLength; // TODO: fix with actual time spent
+        workshop.updateTick(timeSpent);
+
         synchronized (visibleColourLock) {
             Colour c = getMostVisibleColour();
-            long timeSpent = gameTickLength; // TODO: fix with actual time spent
             switch (c) {
                 case Red:
-                    redBucket.updateTick(timeSpent, colourSaturation(currentRedVisible));
+                    redBucket.updateTick(timeSpent,
+                            ImageProcessingHelper.colourSaturation(currentRedVisible));
                     break;
                 case Green:
-                    greenBucket.updateTick(timeSpent, colourSaturation(currentGreenVisible));
+                    greenBucket.updateTick(timeSpent,
+                            ImageProcessingHelper.colourSaturation(currentGreenVisible));
                     break;
                 case Blue:
-                    blueBucket.updateTick(timeSpent, colourSaturation(currentBlueVisible));
+                    blueBucket.updateTick(timeSpent,
+                            ImageProcessingHelper.colourSaturation(currentBlueVisible));
                     break;
             }
         }
@@ -91,9 +96,5 @@ public class GameController {
             return Colour.Blue;
         }
 
-    }
-
-    private double colourSaturation(int colourValue) {
-        return colourValue / 255.0;
     }
 }

@@ -53,4 +53,14 @@ public class ImageProcessingHelper {
 
         return new int[]{r, g, b};
     }
+
+    public static double colourSaturation(int colourValue) {
+        return colourValue / 255.0;
+    }
+
+    public static int pixelValue(double saturation) {
+        double value = saturation * 255;
+        int roundedValue = (int)(value + 0.5);
+        return Math.max(0, Math.min(roundedValue, 255));
+    }
 }

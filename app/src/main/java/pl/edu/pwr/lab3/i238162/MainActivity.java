@@ -16,7 +16,7 @@ import pl.edu.pwr.lab3.i238162.ui.UiUpdatable;
 
 public class MainActivity extends AppCompatActivity {
     private GameController controller;
-    private ArrayList<UiUpdatable> currentUiElements = new ArrayList<>();
+    private final ArrayList<UiUpdatable> currentUiElements = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
