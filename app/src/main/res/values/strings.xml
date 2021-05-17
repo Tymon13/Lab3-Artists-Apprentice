@@ -23,4 +23,12 @@
     <string name="workshop_collect_wages_button_default">Collect your wages: 0 gp</string>
     <string name="workshop_collect_wages_button">Collect your wages: %1$d gp</string>
     <string name="workshop_view_gallery_button">View gallery</string>
+
+    <string name="credits_title">Credits</string>
+    <string name="credits_text">Pixel arts from:\n
+    <a href="https://helianthus-games.itch.io/pixel-art-planets">https://helianthus-games.itch.io/pixel-art-planets</a>\n
+    <a href="https://ghostpixxells.itch.io/pixelfood">https://ghostpixxells.itch.io/pixelfood</a>\n
+    <a href="https://alexs-assets.itch.io/16x16-rpg-item-pack">https://alexs-assets.itch.io/16x16-rpg-item-pack</a>\n
+    <a href="https://gwalker76.itch.io/8x8-pixel-assets">https://gwalker76.itch.io/8x8-pixel-assets</a></string>
+
 </resources>

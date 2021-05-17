@@ -1,7 +1,11 @@
 package pl.edu.pwr.lab3.i238162;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -34,6 +38,26 @@ public class MainActivity extends AppCompatActivity {
         controller = new GameController(this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu, menu); //your file name
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_credits) {
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.credits_title)
+                    .setMessage(R.string.credits_text)
+                    .setPositiveButton(R.string.button_ok, null)
+                    .show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public GameController getController() {
         return controller;
     }
@@ -47,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateUi() {
-        for (UiUpdatable uiElement: currentUiElements) {
+        for (UiUpdatable uiElement : currentUiElements) {
             uiElement.updateUi();
         }
     }
