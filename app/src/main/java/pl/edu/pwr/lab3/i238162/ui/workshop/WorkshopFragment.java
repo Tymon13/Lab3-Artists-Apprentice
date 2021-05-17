@@ -90,6 +90,9 @@ public class WorkshopFragment extends Fragment implements UiUpdatable {
 
     private void updateBucket(Colour colour) {
         PaintBucketViewHolder holder = new PaintBucketViewHolder(parentActivity, colour);
+        if (holder.fillrect == null || holder.filltext == null || holder.gaintext == null) {
+            return;
+        }
         Bucket bucket = controller.getWorkshop().getBucket(colour);
         ViewGroup.LayoutParams params = holder.fillrect.getLayoutParams();
         params.height = (int) (bucket.getFillFraction() * maxFillLevelHeight);
