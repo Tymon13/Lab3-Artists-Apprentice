@@ -80,14 +80,20 @@ public class GameController {
                 case Red:
                     redBucket.updateTick(timeSpent,
                             ImageProcessingHelper.colourSaturation(currentRedVisible));
+                    greenBucket.updateTick(timeSpent, 0);
+                    blueBucket.updateTick(timeSpent, 0);
                     break;
                 case Green:
                     greenBucket.updateTick(timeSpent,
                             ImageProcessingHelper.colourSaturation(currentGreenVisible));
+                    redBucket.updateTick(timeSpent, 0);
+                    blueBucket.updateTick(timeSpent, 0);
                     break;
                 case Blue:
                     blueBucket.updateTick(timeSpent,
                             ImageProcessingHelper.colourSaturation(currentBlueVisible));
+                    redBucket.updateTick(timeSpent, 0);
+                    greenBucket.updateTick(timeSpent, 0);
                     break;
             }
         }
