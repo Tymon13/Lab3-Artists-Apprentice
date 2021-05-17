@@ -91,6 +91,8 @@ public class MainFragment extends Fragment implements UiUpdatable {
         super.onPause();
         Log.i(getClass().getSimpleName(), "Deregister MainFragment");
         shouldContinueImageAnalysis.set(false);
+        int[] black = {0, 0, 0};
+        controller.setCurrentColour(black);
         parentActivity.deregisterCurrentUiElement(this);
     }
 
