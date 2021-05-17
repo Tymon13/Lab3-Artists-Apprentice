@@ -9,4 +9,7 @@
     <item
         android:id="@+id/menu_item_credits"
         android:title="@string/credits_title" />
+    <item
+        android:id="@+id/cheats"
+        android:title="Cheat: fill buckets" />
 </menu>

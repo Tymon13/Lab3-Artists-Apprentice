@@ -32,11 +32,11 @@ public class Bucket {
         return maxLevel - currentLevel;
     }
 
-    protected void remove(double amount) {
+    public void remove(double amount) {
         currentLevel = Math.max(0.0, currentLevel - amount);
     }
 
-    protected void add(double amount) {
+    public void add(double amount) {
         currentLevel = Math.min(maxLevel, currentLevel + amount);
     }
 }

@@ -6,6 +6,7 @@ import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,12 +54,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         if (item.getItemId() == R.id.menu_item_credits) {
-            AlertDialog dialog = new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this)
                     .setTitle(R.string.credits_title)
                     .setMessage(R.string.credits_text)
                     .setPositiveButton(R.string.button_ok, null)
                     .show();
             return true;
+        } else if (item.getItemId() == R.id.cheats) {
+            controller.getWorkshop().getBucket(Colour.Red).add(100);
+            controller.getWorkshop().getBucket(Colour.Green).add(100);
+            controller.getWorkshop().getBucket(Colour.Blue).add(100);
+            Toast.makeText(this, "Cheater", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }

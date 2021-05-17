@@ -143,7 +143,6 @@ public class MainFragment extends Fragment implements UiUpdatable {
         int[] rgbPixel = ImageProcessingHelper.getMiddlePixelAsRgb(image);
         Log.d(MainFragment.class.getSimpleName(),
                 String.format("RGB pixel: #%02x%02x%02x", rgbPixel[0], rgbPixel[1], rgbPixel[2]));
-        //TODO: debug feature, but it's useful - could be implemented somewhere eventually
         displayCapturedColour(rgbPixel);
         controller.setCurrentColour(rgbPixel);
 
