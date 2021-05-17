@@ -18,9 +18,12 @@ public class GameController {
     private final PlayerBucket greenBucket = new PlayerBucket(0.1, 0, 1);
     private final PlayerBucket blueBucket = new PlayerBucket(0.1, 0, 1);
 
+    private final MainActivity parentActivity;
     private final Workshop workshop;
+    private int money = 0;
 
     public GameController(MainActivity parentActivity) {
+        this.parentActivity = parentActivity;
         workshop = new Workshop(parentActivity);
 
         handler.postDelayed(gameTick = () -> {
@@ -47,6 +50,11 @@ public class GameController {
         workshop.transferPaint(Colour.Red, redBucket);
         workshop.transferPaint(Colour.Green, greenBucket);
         workshop.transferPaint(Colour.Blue, blueBucket);
+    }
+
+    public void collectMoney() {
+        money += workshop.collectMoney();
+        parentActivity.updateUi();
     }
 
     public Bucket getBucket(Colour colour) {

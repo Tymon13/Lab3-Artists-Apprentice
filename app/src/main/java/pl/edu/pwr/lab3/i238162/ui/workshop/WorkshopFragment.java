@@ -7,6 +7,7 @@ import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ public class WorkshopFragment extends Fragment implements UiUpdatable {
     private Workshop workshop;
 
     private ImageView currentPainting;
+    private Button collectMoneyButton;
     private double maxFillLevelHeight;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class WorkshopFragment extends Fragment implements UiUpdatable {
         maxFillLevelHeight = parentActivity.getResources().getDimensionPixelSize(R.dimen.bucket_height);
 
         currentPainting = root.findViewById(R.id.current_painting);
+        collectMoneyButton = root.findViewById(R.id.collect_wages_button);
+        collectMoneyButton.setOnClickListener(this::onCollectWagesButtonClick);
         root.findViewById(R.id.contribute_paint_button).setOnClickListener(this::onContributePaintButtonClick);
         updateUi();
 
@@ -66,6 +70,7 @@ public class WorkshopFragment extends Fragment implements UiUpdatable {
     public void updateUi() {
         updateBuckets();
         updatePainting();
+        updateButtons();
     }
 
     private void updatePainting() {
@@ -97,7 +102,16 @@ public class WorkshopFragment extends Fragment implements UiUpdatable {
         });
     }
 
+    private void updateButtons() {
+        int moneyToGain = workshop.getMoneyToCollect();
+        collectMoneyButton.setText(getString(R.string.workshop_collect_wages_button, moneyToGain));
+    }
+
     private void onContributePaintButtonClick(View v) {
         controller.transferPaintToWorkshop();
+    }
+
+    private void onCollectWagesButtonClick(View v) {
+        controller.collectMoney();
     }
 }
