@@ -8,7 +8,7 @@ import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -177,7 +177,7 @@ public class MainFragment extends Fragment implements UiUpdatable {
 
     private void displayCapturedColour(int[] rgbPixel) {
         int detectedColour = (0xFF << 24) | (rgbPixel[0] << 16) | (rgbPixel[1] << 8) | (rgbPixel[2]);
-        LinearLayout debug = parentActivity.findViewById(R.id.linearLayout);
+        ImageView debug = parentActivity.findViewById(R.id.visible_colour_preview);
         parentActivity.runOnUiThread(() -> debug.setBackgroundColor(detectedColour));
     }
 }
