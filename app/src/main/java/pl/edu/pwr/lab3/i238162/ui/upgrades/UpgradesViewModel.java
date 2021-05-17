@@ -10,7 +10,7 @@ public class UpgradesViewModel extends ViewModel {
 
     public UpgradesViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("No upgrades available :(");
     }
 
     public LiveData<String> getText() {
