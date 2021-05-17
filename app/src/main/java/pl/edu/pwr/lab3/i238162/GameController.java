@@ -105,4 +105,8 @@ public class GameController {
         }
 
     }
+
+    public int getMoney() {
+        return money;
+    }
 }

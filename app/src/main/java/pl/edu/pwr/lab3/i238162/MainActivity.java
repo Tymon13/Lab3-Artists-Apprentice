@@ -1,6 +1,8 @@
 package pl.edu.pwr.lab3.i238162;
 
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import pl.edu.pwr.lab3.i238162.ui.UiUpdatable;
 
 public class MainActivity extends AppCompatActivity {
+    Menu menu;
+
     private GameController controller;
     private final ArrayList<UiUpdatable> currentUiElements = new ArrayList<>();
 
@@ -41,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu); //your file name
+        inflater.inflate(R.menu.option_menu, menu);
+        this.menu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -74,5 +79,19 @@ public class MainActivity extends AppCompatActivity {
         for (UiUpdatable uiElement : currentUiElements) {
             uiElement.updateUi();
         }
+        try {
+            updateCoinValue(controller.getMoney());
+        } catch (NullPointerException e) {
+            // Very first update happens before controller is set
+        }
+    }
+
+    private void updateCoinValue(int coins) {
+        MenuItem menuItem = menu.findItem(R.id.menu_item_gp_show);
+        ImageSpan imageSpan = new ImageSpan(this, R.drawable.ic_baseline_monetization_on_24);
+        CharSequence title = " " + getString(R.string.coins_display, coins);
+        SpannableString spannableString = new SpannableString(title);
+        spannableString.setSpan(imageSpan, 0, 1, 0);
+        menuItem.setTitle(spannableString);
     }
 }
