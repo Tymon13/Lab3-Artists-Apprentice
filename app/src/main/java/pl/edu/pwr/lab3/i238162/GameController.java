@@ -6,7 +6,7 @@ import android.util.Log;
 public class GameController {
     private final Handler handler = new Handler();
     private Runnable gameTick;
-    private final long gameTickLength = 1000;
+    private final long gameTickLength = 100;
 
     private final Object visibleColourLock = new Object();
     private int currentRedVisible;
